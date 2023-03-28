@@ -1,17 +1,16 @@
-import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
-import MainLayout from "../layouts/MainLayout";
+// import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import styles from '../styles/Home.module.css'
 import { useEffect } from "react";
 import { supabase } from "../client";
 
 
-export default function HomePage({ profiles }) {
+export default function HomePage({ data }) {
 	useEffect(() => {
-		console.log('profiles', profiles);
+		console.log('data', data);
 	}, [])
 
   return (
-		<MainLayout>
+		<div>
 			<div className={styles.mainPage}>
 				<div className={styles.week}>
 					<div className={styles.day}>S</div>
@@ -36,7 +35,7 @@ export default function HomePage({ profiles }) {
 					<hr />
 				</div>
 			</div>
-		</MainLayout>
+		</div>
 	);
 }
 

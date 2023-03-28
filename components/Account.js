@@ -1,9 +1,14 @@
 import { useState, useEffect } from "react";
 import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react";
+import { supabase } from "../client";
 
-export default function Account({ session }) {
+export default async function Account({ session }) {
 	const supabase = useSupabaseClient();
 	const user = useUser();
+    
+    // const { data: { user } } = await supabase.auth.getUser()
+
+
 	const [loading, setLoading] = useState(true);
 	const [username, setUsername] = useState(null);
 	// const [website, setWebsite] = useState(null);
