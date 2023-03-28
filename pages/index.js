@@ -31,7 +31,7 @@ const LoginPage = () => {
 			/>
 		)
      } else {
-      router.push('/authorized/profile')
+      router.push("/authorized/profile");
     }
     
 	// return <HomePage data={data} />
