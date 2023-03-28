@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { useEffect } from "react";
 import HomePage from "../components/HomePage";
+import { supabase } from '../client'
 
 
 const Home = ({ user }) => {
@@ -32,9 +33,8 @@ const Home = ({ user }) => {
 	}
 };
 
-export const getServerSideProps = async (ctx) => {
+export const getServerSideProps = async () => {
 	// Create authenticated Supabase Client
-	const supabase = createServerSupabaseClient(ctx);
 	// Check if we have a session
 	const {
 		data: { session }

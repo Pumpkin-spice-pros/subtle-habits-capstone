@@ -2,6 +2,7 @@ import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import MainLayout from "../layouts/MainLayout";
 import styles from '../styles/Home.module.css'
 import { useEffect } from "react";
+import { supabase } from "../client";
 
 
 export default function HomePage({ profiles }) {
@@ -39,8 +40,7 @@ export default function HomePage({ profiles }) {
 	);
 }
 
-export const getServerSideProps = async (ctx) => {
-	const supabase = createServerSupabaseClient(ctx);
+export const getServerSideProps = async () => {
 	// select id, email, and username info from profile table
 	let { data: profiles, error } = await supabase.from("profiles").select("id");
 	return {
