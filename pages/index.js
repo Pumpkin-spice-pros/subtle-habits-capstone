@@ -23,7 +23,7 @@ const LoginPage = () => {
 	if (!user){
 		return (
 			<Auth
-				redirectTo="http://localhost:3000/"
+				redirectTo="https://mysubtlehabits.vercel.app/"
 				appearance={{ theme: ThemeSupa }}
 				supabaseClient={supabaseClient}
 				providers={[]}
