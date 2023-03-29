@@ -21,18 +21,22 @@
 
 
 import NextAuth from 'next-auth';
-import Providers from 'next-auth/providers';
+import Credentials from 'next-auth/providers/credentials';
 import { createClient } from '@supabase/supabase-js';
 
-const supabase = createClient('supabase-url', 'supabase-anon-key');
+const supabase = createClient(
+	process.env.NEXT_PUBLIC_SUPABASE_URL,
+	process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+);
 
 const options = {
   providers: [
-    Providers.Credentials({
+    Credentials({
       name: 'Supabase',
       credentials: {
         email: { label: "Email", type: "email" },
-        password: { label: "Password", type: "password" }
+        password: { label: "Password", type: "password" },
+        username: { label: 'username', type: 'text' }
       },
       async authorize(credentials) {
         const { user, error } = await supabase.auth.signIn({
