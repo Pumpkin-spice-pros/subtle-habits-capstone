@@ -1,5 +1,5 @@
-import Card from "./card"
-import Avatar from "./avatar"
+import Card from "./Card"
+import Avatar from "./Avatar"
 import ClickOutHandler from 'react-clickout-handler'
 import { useState } from "react"
 import Link from "next/link"
