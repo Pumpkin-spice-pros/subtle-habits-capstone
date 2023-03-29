@@ -1,6 +1,6 @@
 import Card from "./Card"
 import Avatar from "./Avatar"
-import ClickOutHandler from 'react-clickout-handler'
+// import ClickOutHandler from 'react-clickout-handler'
 import { useState } from "react"
 import Link from "next/link"
 export default function PostCard () {
@@ -31,7 +31,7 @@ export default function PostCard () {
          <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM18.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
         </svg>
             </button> 
-            <ClickOutHandler onClickOut={()=> setDropdownOpen(false)}>
+            {/* <ClickOutHandler onClickOut={()=> setDropdownOpen(false)}>
                 <div className="relative">
                 {dropdownOpen && (
                       <div className="absolute -right-6 bg-white shadow-md shadow-gray-400 p-3 rounded-sm w-52">
@@ -58,7 +58,7 @@ export default function PostCard () {
                   </div>
                 )}
                 </div> 
-            </ClickOutHandler>
+            </ClickOutHandler> */}
         </div>
         </div>
         <div>
