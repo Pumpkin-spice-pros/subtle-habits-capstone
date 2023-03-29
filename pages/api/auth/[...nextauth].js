@@ -53,7 +53,7 @@ const options = {
 		secret: process.env.SUPABASE_SERVICE_ROLE_KEY
 	}),
   pages: {
-    signIn: '/login'
+    signIn: '/'
   },
   callbacks: {
     session: async (session, user) => {
