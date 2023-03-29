@@ -1,7 +1,5 @@
+import Profile from "../profile/index";
 
-
-export default function SubProfile() {
-  return (
-    <div>...profile</div>
-  )
+export default function ProfilePage () {
+    return <Profile/>
 }
