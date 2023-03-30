@@ -1,5 +1,5 @@
 import SignOutButton from "../../../components/SignOutButton";
-
+import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react";
 
 import Avatar from "../../../components/Avatar";
 import Card from "../../../components/Card";
