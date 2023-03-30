@@ -1,16 +1,21 @@
 import { Auth } from "@supabase/auth-ui-react";
 import { ThemeSupa } from "@supabase/auth-ui-shared";
-import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react";
+import { useUser, useSupabaseClient, useSession } from "@supabase/auth-helpers-react";
 import { useEffect, useState } from "react";
 import HomePage from "../components/HomePage";
 import { useRouter } from "next/router";
-// import { supabase } from "../client";
+import { supabase } from "../client";
+
 
 const LoginPage = () => {
 	const supabaseClient = useSupabaseClient();
 	const user = useUser();
+  const session = useSession();
+  console.log(session);
+  // const { supabaseAccessToken } = session;
 	const [data, setData] = useState();
-	// const [email, setEmail] = useState();
+	// const [email, setEmail] = useState('');
+	// const [password, setPassword] = useState('');
 	// const [loading, setLoading] = useState(false);
 	// const [submitted, setSubmitted] = useState(false);
   const router = useRouter();
@@ -24,6 +29,18 @@ const LoginPage = () => {
 		if (user) loadData();
 	}, [user]);
 
+  // const getURL = () => {
+	// 	let url =
+	// 		process?.env?.NEXT_PUBLIC_SITE_URL ?? // Set this to your site URL in production env.
+	// 		process?.env?.NEXT_PUBLIC_VERCEL_URL ?? // Automatically set by Vercel.
+	// 		"http://localhost:3000/";
+	// 	// Make sure to include `https://` when not localhost.
+	// 	url = url.includes("http") ? url : `https://${url}`;
+	// 	// Make sure to including trailing `/`.
+	// 	url = url.charAt(url.length - 1) === "/" ? url : `${url}/`;
+	// 	return url;
+	// };
+
   // async function signInWithEmail(e) {
   //   e.preventDefault();
   //   setLoading(true);
@@ -31,10 +48,16 @@ const LoginPage = () => {
 	// 	const { data, error } = await supabaseClient.auth.signInWithOtp({
 	// 		email: email,
 	// 		options: {
-	// 			emailRedirectTo: "https://mysubtlehabits.vercel.app"
+	// 			emailRedirectTo: getURL()
 	// 		}
 	// 	});
-  //   setLoading(false)
+  //   // const { data, error } = await supabase.auth.signInWithPassword({
+	// 	// 	email: email,
+	// 	// 	password: password
+	// 	// });
+  //   if(!error){
+  //     setLoading(false)
+  //   }
 	// }
 
 	if (!user){
@@ -43,11 +66,11 @@ const LoginPage = () => {
 				redirectTo="https://mysubtlehabits.vercel.app/"
 				appearance={{ theme: ThemeSupa }}
 				supabaseClient={supabaseClient}
-				providers={['email']}
+				providers={['credentials']}
 				socialLayout="horizontal"
 			/>
     //   <div>
-    //   {!submitted ? <form onSubmit={(e) => signInWithEmail(e)}>
+    //   <form onSubmit={(e) => signInWithEmail(e)}>
     //     <label htmlFor="email">Email</label>
     //     <input 
     //     id='email'
@@ -55,10 +78,15 @@ const LoginPage = () => {
     //     type='text'
     //     onChange={(e) => setEmail(e.target.value)}
     //     />
+    //     <label htmlFor="password">Password</label>
+    //     <input 
+    //     id='password'
+    //     value={password}
+    //     type='password'
+    //     onChange={(e) => setPassword(e.target.value)}
+    //     />
     //     <button type='submit'>{loading ? 'Loading...' : 'Sign In'}</button>
     //   </form>
-    //   : <h1>Please check your email to sign in</h1>
-    // }
     // </div>
 		)
      } else {

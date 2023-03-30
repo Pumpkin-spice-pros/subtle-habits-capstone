@@ -23,11 +23,12 @@
 import NextAuth from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 import { createClient } from '@supabase/supabase-js';
+import { supabase } from '../../../client';
 
-const supabase = createClient(
-	process.env.NEXT_PUBLIC_SUPABASE_URL,
-	process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-);
+// const supabase = createClient(
+// 	process.env.NEXT_PUBLIC_SUPABASE_URL,
+// 	process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+// );
 
 const options = {
   providers: [
@@ -36,7 +37,7 @@ const options = {
       credentials: {
         email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
-        username: { label: 'username', type: 'text' }
+        username: { label: 'username', type: 'text'}
       },
       async authorize(credentials) {
         const { user, error } = await supabase.auth.signIn({
