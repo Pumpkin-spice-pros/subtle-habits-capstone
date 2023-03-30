@@ -31,7 +31,7 @@ const LoginPage = () => {
 		const { data, error } = await supabase.auth.signInWithOtp({
 			email: email,
 			options: {
-				emailRedirectTo: "https://mysubtlehabits.vercel.app/authorized/profile"
+				emailRedirectTo: "http://localhost:3000"
 			}
 		});
     setLoading(false)
