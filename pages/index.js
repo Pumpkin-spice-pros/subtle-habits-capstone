@@ -26,7 +26,7 @@ const LoginPage = () => {
 				redirectTo="https://mysubtlehabits.vercel.app/"
 				appearance={{ theme: ThemeSupa }}
 				supabaseClient={supabaseClient}
-				providers={['credentials']}
+				providers={['google']}
 				socialLayout="horizontal"
 			/>
 		)
