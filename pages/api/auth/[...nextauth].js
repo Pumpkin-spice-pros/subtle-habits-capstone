@@ -1,31 +1,75 @@
-import NextAuth from "next-auth"
-import { SupabaseAdapter } from "@next-auth/supabase-adapter"
-import jwt from "jsonwebtoken"
+// import NextAuth from "next-auth"
+// import { SupabaseAdapter } from "@next-auth/supabase-adapter"
 
-// For more information on each option (and a full list of options) go to
-// https://authjs.dev/reference/configuration/auth-options
-export default NextAuth({
-  // https://authjs.dev/reference/providers/oauth-builtin
-  providers: [],
-  adapter: SupabaseAdapter({
-    url: process.env.NEXT_PUBLIC_SUPABASE_URL,
-    secret: process.env.SUPABASE_SERVICE_ROLE_KEY,
-  }),
-    callbacks: {
-    async session({ session, user }) {
-      const signingSecret = process.env.SUPABASE_JWT_SECRET
-      if (signingSecret) {
-        const payload = {
-          aud: "authenticated",
-          exp: Math.floor(new Date(session.expires).getTime() / 1000),
-          sub: user.id,
-          email: user.email,
-          role: "authenticated",
+// // For more information on each option (and a full list of options) go to
+// // https://authjs.dev/reference/configuration/auth-config
+// export default NextAuth({
+// 	// https://authjs.dev/reference/providers/oauth-builtin
+// 	providers: [
+// 		EmailProvider({
+// 			server: process.env.EMAIL_SERVER,
+// 			from: process.env.EMAIL_FROM
+// 			// maxAge: 24 * 60 * 60, // How long email links are valid for (default 24h)
+// 		})
+// 	],
+// 	adapter: SupabaseAdapter({
+// 		url: process.env.NEXT_PUBLIC_SUPABASE_URL,
+// 		secret: process.env.SUPABASE_SERVICE_ROLE_KEY
+// 	})
+// 	// ...
+// });
+
+
+import NextAuth from 'next-auth';
+import Credentials from 'next-auth/providers/credentials';
+import { createClient } from '@supabase/supabase-js';
+import { supabase } from '../../../client';
+
+// const supabase = createClient(
+// 	process.env.NEXT_PUBLIC_SUPABASE_URL,
+// 	process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+// );
+
+const options = {
+  providers: [
+    Credentials({
+      name: 'Supabase',
+      credentials: {
+        email: { label: "Email", type: "email" },
+        password: { label: "Password", type: "password" },
+        username: { label: 'username', type: 'text'}
+      },
+      async authorize(credentials) {
+        const { user, error } = await supabase.auth.signIn({
+          email: credentials.email,
+          password: credentials.password
+        });
+
+        if (error) {
+          throw new Error(error.message);
         }
-        session.supabaseAccessToken = jwt.sign(payload, signingSecret)
+
+        return user;
       }
-      return session
-    },
+    })
+  ],
+  adapter: SupabaseAdapter({
+		url: process.env.NEXT_PUBLIC_SUPABASE_URL,
+		secret: process.env.SUPABASE_SERVICE_ROLE_KEY
+	}),
+  pages: {
+    signIn: '/'
   },
-  // ...
-})
+  callbacks: {
+    session: async (session, user) => {
+      session.user.id = user.id;
+      return Promise.resolve(session);
+    }
+  },
+  secret: process.env.SECRET,
+  jwt: {
+    secret: process.env.JWT_SECRET
+  }
+};
+
+export default (req, res) => NextAuth(req, res, options);
