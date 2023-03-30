@@ -2,3 +2,6 @@ node_modules
 .env.local
 .env
 .next
+supabase/config.toml
+config.toml
+/supabase/config.toml
