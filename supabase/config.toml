@@ -61,12 +61,12 @@ enable_confirmations = false
 # Use an external OAuth provider. The full list of providers are: `apple`, `azure`, `bitbucket`,
 # `discord`, `facebook`, `github`, `gitlab`, `google`, `keycloak`, `linkedin`, `notion`, `twitch`,
 # `twitter`, `slack`, `spotify`, `workos`, `zoom`.
-[auth.external.apple]
+[auth.external.google]
 enabled = false
-client_id = ""
-secret = ""
+client_id = "338494299516-5d3fogopk6hn62add4iiehfo0i853hoh.apps.googleusercontent.com"
+secret = "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"
 # Overrides the default auth redirectUrl.
-redirect_uri = ""
+redirect_uri = "https://mysubtlehabits.vercel.app/authorized/profile"
 # Overrides the default auth provider URL. Used to support self-hosted gitlab, single-tenant Azure,
 # or any other third-party OIDC providers.
-url = ""
+url = "https://mysubtlehabits.vercel.app/"

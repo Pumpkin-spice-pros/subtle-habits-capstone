@@ -22,54 +22,58 @@
 
 import NextAuth from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
-import { createClient } from '@supabase/supabase-js';
-import { supabase } from '../../../client';
+import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
+// import { supabase } from '../../../client';
 
-// const supabase = createClient(
-// 	process.env.NEXT_PUBLIC_SUPABASE_URL,
-// 	process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-// );
+const supabase = createServerSupabaseClient(
+	process.env.NEXT_PUBLIC_SUPABASE_URL,
+	process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+);
 
 const options = {
-  providers: [
-    Credentials({
-      name: 'Supabase',
-      credentials: {
-        email: { label: "Email", type: "email" },
-        password: { label: "Password", type: "password" },
-        username: { label: 'username', type: 'text'}
-      },
-      async authorize(credentials) {
-        const { user, error } = await supabase.auth.signIn({
-          email: credentials.email,
-          password: credentials.password
-        });
+	providers: [
+		Credentials({
+			name: "Supabase",
+			credentials: {
+				email: { label: "Email", type: "email" },
+				password: { label: "Password", type: "password" },
+				username: { label: "username", type: "text" }
+			},
+			async authorize(credentials) {
+				const { user, error } = await supabase.auth.signIn({
+					email: credentials.email,
+					password: credentials.password
+				});
 
-        if (error) {
-          throw new Error(error.message);
-        }
+				if (error) {
+					throw new Error(error.message);
+				}
 
-        return user;
-      }
-    })
-  ],
-  adapter: SupabaseAdapter({
+				return user;
+			}
+		}),
+		GoogleProvider({
+			clientId: process.env.GOOGLE_CLIENT_ID,
+			clientSecret: process.env.GOOGLE_CLIENT_SECRET
+		})
+	],
+	adapter: SupabaseAdapter({
 		url: process.env.NEXT_PUBLIC_SUPABASE_URL,
 		secret: process.env.SUPABASE_SERVICE_ROLE_KEY
 	}),
-  pages: {
-    signIn: '/'
-  },
-  callbacks: {
-    session: async (session, user) => {
-      session.user.id = user.id;
-      return Promise.resolve(session);
-    }
-  },
-  secret: process.env.SECRET,
-  jwt: {
-    secret: process.env.JWT_SECRET
-  }
+	pages: {
+		signIn: "/"
+	},
+	callbacks: {
+		session: async (session, user) => {
+			session.user.id = user.id;
+			return Promise.resolve(session);
+		}
+	},
+	secret: process.env.SECRET,
+	jwt: {
+		secret: process.env.JWT_SECRET
+	}
 };
 
 export default (req, res) => NextAuth(req, res, options);
