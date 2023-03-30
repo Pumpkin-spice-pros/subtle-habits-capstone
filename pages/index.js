@@ -4,7 +4,7 @@ import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useEffect, useState } from "react";
 import HomePage from "../components/HomePage";
 import { useRouter } from "next/router";
-import { supabase } from "../client";
+// import { supabase } from "../client";
 
 const LoginPage = () => {
 	const supabaseClient = useSupabaseClient();
@@ -28,10 +28,10 @@ const LoginPage = () => {
     e.preventDefault();
     setLoading(true);
     setSubmitted(true)
-		const { data, error } = await supabase.auth.signInWithOtp({
+		const { data, error } = await supabaseClient.auth.signInWithOtp({
 			email: email,
 			options: {
-				emailRedirectTo: "http://localhost:3000"
+				emailRedirectTo: "https://mysubtlehabits.vercel.app"
 			}
 		});
     setLoading(false)
