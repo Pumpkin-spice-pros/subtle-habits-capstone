@@ -1,8 +1,9 @@
 import { Auth } from "@supabase/auth-ui-react";
 import { ThemeSupa } from "@supabase/auth-ui-shared";
-import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react";
+import { useUser, useSupabaseClient, useSession } from "@supabase/auth-helpers-react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+// import { supabaseServer } from "../client";
 
 
 const LoginPage = () => {
@@ -10,6 +11,30 @@ const LoginPage = () => {
 	const user = useUser();
 	const [data, setData] = useState();
   const router = useRouter();
+  const session = useSession();
+
+  const setUserInformation = async () => {
+    const user = useUser();
+		const { user_metadata } = user;
+		const { full_name, email, email_verified } = user_metadata;
+		const first_name = full_name.split(" ")[0];
+		const last_name = full_name.split(" ")[1];
+    const { data, error } = await supabaseClient
+    .from('accounts')
+    .insert([
+      { 'firstName': first_name },
+     { 'lastName': last_name },
+     { 'email': email }
+    ]);
+    if(!error) {
+      let info = {
+        firstName: first_name,
+        lastName: last_name,
+        email: email
+      }
+      return info;
+    }
+  }
 
 	useEffect(() => {
 		async function loadData() {
@@ -43,9 +68,20 @@ const LoginPage = () => {
 			/>
 		)
      } else {
-      router.push("/authorized/profile");
-      console.log('user: ', user);
-    }
+      // let info = setUserInformation();
+       router.push("/authorized/profile");
+      //  console.log('user: ', user);
+      //  console.log('session: ', session)
+      }
 };
+    
+// export const getServerSideProps = () => {
+  // logic function to get users info from their google account and paste it in their profile via insert into the accounts table (pre-rendering it before they get to the page) goes here
+  // const user = useUser();
+  // const { user_metadata } = user;
+  // const { full_name, email, email_verified} = user_metadata;
+  // const first_name = full_name.split(' ')[0];
+  // const last_name = full_name.split(' ')[1];
+// }
 
 export default LoginPage;
